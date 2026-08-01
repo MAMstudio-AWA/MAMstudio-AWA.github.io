@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>LUMIÈRE — Contenido UGC con herramientas digitales para eCommerce de Lujo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,600;1,6..96,500&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --negro:#0a0506;
+    --negro2:#150a0c;
+    --burdeos:#2b0810;
+    --vino:#4a0d18;
+    --rojo:#7d1120;
+    --rojo-luz:#a8182e;
+    --blanco:#f7f2ec;
+    --blanco-op:#f7f2ec99;
+    --blanco-op2:#f7f2ec55;
+    --dorado:#c9a15c;
+    --dorado-suave:#c9a15c99;
+    --line:#f7f2ec1a;
+    --glass:#f7f2ec0d;
+    --glass-border:#f7f2ec22;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--negro);
+    color:var(--blanco);
+    font-family:'Jost',sans-serif;
+    font-weight:300;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--dorado);color:var(--negro);}
+  a{color:inherit;}
+
+  .eyebrow{
+    font-family:'Jost',sans-serif; font-size:11px; letter-spacing:.32em; text-transform:uppercase;
+    color:var(--dorado); display:flex; align-items:center; gap:14px;
+  }
+  .eyebrow::before{content:"";width:30px;height:1px;background:var(--dorado);}
+  h1,h2,h3{font-family:'Bodoni Moda',serif; font-weight:500; line-height:1.06; letter-spacing:.005em;}
+
+  /* ---------- nav ---------- */
+  nav{
+    position:fixed; top:0; left:0; right:0; z-index:80;
+    display:flex; justify-content:space-between; align-items:center;
+    padding:26px 6vw;
+    backdrop-filter:blur(14px) saturate(140%);
+    -webkit-backdrop-filter:blur(14px) saturate(140%);
+    background:linear-gradient(180deg, #0a0506cc, transparent);
+    border-bottom:1px solid transparent;
+    transition:background .3s, border-color .3s;
+  }
+  nav.scrolled{background:#0a0506cc; border-color:var(--line);}
+  nav .brand{font-family:'Bodoni Moda',serif; font-size:22px; letter-spacing:.08em;}
+  nav .links{display:flex; gap:40px; font-size:12px; letter-spacing:.14em; text-transform:uppercase;}
+  nav .links a{text-decoration:none; opacity:.75; transition:opacity .25s;}
+  nav .links a:hover{opacity:1;}
+  nav .nav-cta{display:none;}
+  @media (min-width:860px){ nav .nav-cta{display:block;} }
+  @media (max-width:860px){ nav .links{display:none;} }
+
+  .btn{
+    font-family:'Jost',sans-serif; font-size:12px; letter-spacing:.16em; text-transform:uppercase;
+    padding:16px 30px; border-radius:2px; border:1px solid var(--dorado);
+    color:var(--blanco); text-decoration:none; background:transparent;
+    transition:.3s ease; display:inline-block; position:relative; overflow:hidden;
+  }
+  .btn.solid{background:var(--dorado); border-color:var(--dorado); color:var(--negro); font-weight:500;}
+  .btn.solid:hover{background:var(--blanco); border-color:var(--blanco); box-shadow:0 10px 40px -8px #c9a15c99;}
+  .btn:not(.solid):hover{background:var(--glass); border-color:var(--blanco);}
+
+  /* ---------- hero ---------- */
+  .hero{
+    min-height:100svh; display:flex; align-items:center; position:relative;
+    padding:0 6vw;
+    background:
+      radial-gradient(ellipse 55% 60% at 78% 30%, #a8182e3d, transparent 65%),
+      radial-gradient(ellipse 70% 55% at 15% 85%, var(--vino), transparent 70%),
+      linear-gradient(180deg, var(--negro) 0%, var(--negro2) 60%, var(--burdeos) 140%);
+    overflow:hidden;
+  }
+  .hero::after{
+    content:""; position:absolute; inset:0; pointer-events:none;
+    background:radial-gradient(ellipse 120% 60% at 50% 0%, #ffffff08, transparent 60%);
+  }
+  .hero-inner{position:relative; z-index:3; max-width:760px; padding-top:90px;}
+  .hero h1{font-size:clamp(40px,6.4vw,84px); color:var(--blanco); margin-top:26px;}
+  .hero h1 .accent{font-style:italic; color:var(--dorado);}
+  .hero .sub{margin-top:30px; max-width:52ch; font-size:18px; line-height:1.7; color:var(--blanco-op); font-weight:300;}
+  .hero .sub strong{color:var(--blanco); font-weight:500;}
+  .hero .cta-row{margin-top:46px; display:flex; gap:20px; flex-wrap:wrap; align-items:center;}
+  .hero .micro{margin-top:20px; font-size:12px; letter-spacing:.05em; color:var(--blanco-op2);}
+
+  .hero-visual{
+    position:absolute; right:4vw; top:50%; transform:translateY(-50%);
+    width:min(420px,38vw);
+    animation:float 8s ease-in-out infinite;
+  }
+  @keyframes float{0%,100%{transform:translateY(-50%)}50%{transform:translateY(calc(-50% - 16px))}}
+  @media (max-width:980px){ .hero-visual{display:none;} }
+
+  .scroll-cue{position:absolute; bottom:34px; left:6vw; z-index:3; display:flex; align-items:center; gap:12px; font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--blanco-op2);}
+  .scroll-cue .line{width:1px; height:32px; background:linear-gradient(180deg,var(--dorado),transparent); animation:draw 2s ease-in-out infinite;}
+  @keyframes draw{0%{opacity:.2}50%{opacity:1}100%{opacity:.2}}
+
+  /* ---------- trust marquee ---------- */
+  .trust{border-top:1px solid var(--line); border-bottom:1px solid var(--line); background:var(--negro2); overflow:hidden; padding:26px 0; position:relative; z-index:2;}
+  .trust-inner{display:flex; width:max-content; animation:scroll 30s linear infinite; align-items:center;}
+  .trust-inner span{
+    font-family:'Bodoni Moda',serif; font-style:italic; font-size:19px; color:var(--blanco-op);
+    padding:0 42px; white-space:nowrap; letter-spacing:.02em;
+  }
+  .trust-inner span::after{content:"—"; margin-left:42px; color:var(--dorado);}
+  @keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+  section{padding:150px 6vw; position:relative; z-index:2;}
+  .section-head{max-width:680px; margin-bottom:70px;}
+  .section-head h2{font-size:clamp(32px,4.6vw,58px); margin-top:16px; color:var(--blanco);}
+  .section-head p{margin-top:20px; color:var(--blanco-op); font-size:16px; line-height:1.7; max-width:56ch;}
+  .center{text-align:center; margin-left:auto; margin-right:auto;}
+
+  /* ---------- glass card base ---------- */
+  .glass{
+    background:var(--glass); border:1px solid var(--glass-border); border-radius:6px;
+    backdrop-filter:blur(18px) saturate(150%); -webkit-backdrop-filter:blur(18px) saturate(150%);
+  }
+
+  /* ---------- comparison (signature) ---------- */
+  .compare{display:grid; grid-template-columns:1fr 1fr; gap:26px; margin-top:10px;}
+  @media (max-width:860px){ .compare{grid-template-columns:1fr;} }
+  .compare-card{padding:46px 38px; position:relative; overflow:hidden;}
+  .compare-card.old{opacity:.75;}
+  .compare-card.new{border-color:#c9a15c55; box-shadow:0 30px 80px -30px #a8182e55;}
+  .compare-card .badge{font-size:11px; letter-spacing:.2em; text-transform:uppercase; color:var(--blanco-op2);}
+  .compare-card.new .badge{color:var(--dorado);}
+  .compare-card h3{font-size:28px; margin-top:14px; color:var(--blanco);}
+  .compare-list{margin-top:28px; display:flex; flex-direction:column; gap:16px;}
+  .compare-list li{list-style:none; display:flex; gap:14px; font-size:15px; color:var(--blanco-op); line-height:1.5;}
+  .compare-list .mark{flex:none; width:18px; color:var(--dorado); font-family:'Bodoni Moda',serif; font-style:italic;}
+  .compare-card.old .mark{color:var(--blanco-op2);}
+
+  /* ---------- services ---------- */
+  .services-grid{margin-top:10px; display:grid; grid-template-columns:repeat(3,1fr); gap:22px;}
+  @media (max-width:980px){.services-grid{grid-template-columns:repeat(2,1fr);}}
+  @media (max-width:620px){.services-grid{grid-template-columns:1fr;}}
+  .service{padding:38px 32px; transition:transform .4s cubic-bezier(.2,.8,.2,1), border-color .3s; position:relative; overflow:hidden;}
+  .service:hover{transform:translateY(-6px); border-color:#c9a15c55;}
+  .service .icon{width:44px; height:44px; margin-bottom:26px;}
+  .service h3{font-size:21px; color:var(--blanco); font-weight:500;}
+  .service p{margin-top:12px; font-size:14px; line-height:1.65; color:var(--blanco-op);}
+  .service .num{position:absolute; top:24px; right:28px; font-family:'Bodoni Moda',serif; font-style:italic; font-size:14px; color:var(--blanco-op2);}
+
+  /* ---------- gallery ---------- */
+  .gallery{margin-top:10px; display:grid; grid-template-columns:repeat(4,1fr); grid-auto-rows:170px; gap:16px;}
+  @media (max-width:980px){.gallery{grid-template-columns:repeat(2,1fr);}}
+  @media (max-width:600px){.gallery{grid-template-columns:1fr; grid-auto-rows:220px;}}
+  .g-item{position:relative; border-radius:6px; overflow:hidden; border:1px solid var(--glass-border);}
+  .g-item.tall{grid-row:span 2;}
+  .g-item .layer{position:absolute; inset:0;}
+  .g-item .sheen{position:absolute; inset:0; opacity:0; transition:opacity .5s;
+    background:linear-gradient(120deg, transparent 35%, #ffffff40 48%, transparent 62%); transform:translateX(-40%);}
+  .g-item:hover .sheen{opacity:1; animation:sheen 1.2s ease forwards;}
+  @keyframes sheen{from{transform:translateX(-45%)} to{transform:translateX(45%)}}
+  .g-item .tag{position:absolute; left:16px; bottom:14px; font-size:10px; letter-spacing:.16em; text-transform:uppercase; color:var(--blanco-op); z-index:2;}
+  .g-item .layer{background-size:cover; background-position:center; transition:transform .6s cubic-bezier(.2,.8,.2,1);}
+  .g-item:hover .layer{transform:scale(1.06);}
+  .g1{background:linear-gradient(160deg,#2b0810cc,#0a0506ee), url('https://images.pexels.com/photos/30926227/pexels-photo-30926227.jpeg?auto=compress&cs=tinysrgb&w=800') center/cover;}
+  .g2{background:linear-gradient(200deg,#4a0d18cc,#0a0506ee), url('https://images.pexels.com/photos/30990130/pexels-photo-30990130.jpeg?auto=compress&cs=tinysrgb&w=800') center/cover;}
+  .g3{background:linear-gradient(180deg,#2b0810cc,#150a0cee), url('https://images.pexels.com/photos/17545643/pexels-photo-17545643.jpeg?auto=compress&cs=tinysrgb&w=800') center/cover;}
+  .g4{background:linear-gradient(140deg,#150a0cb3,#7d1120aa), url('https://images.pexels.com/photos/19303043/pexels-photo-19303043.jpeg?auto=compress&cs=tinysrgb&w=800') center/cover;}
+  .g5{background:linear-gradient(160deg,#0a0506cc,#4a0d18cc), url('https://images.pexels.com/photos/6724402/pexels-photo-6724402.jpeg?auto=compress&cs=tinysrgb&w=800') center/cover;}
+  .g6{background:linear-gradient(200deg,#2b0810cc,#0a0506ee), url('https://images.pexels.com/photos/20858959/pexels-photo-20858959.jpeg?auto=compress&cs=tinysrgb&w=800') center/cover;}
+
+  /* ---------- process ---------- */
+  .process{margin-top:20px;}
+  .step{display:grid; grid-template-columns:110px 1fr; gap:30px; padding:38px 0; border-top:1px solid var(--line); align-items:start;}
+  .process .step:last-child{border-bottom:1px solid var(--line);}
+  .step .num{font-family:'Bodoni Moda',serif; font-style:italic; font-size:36px; color:var(--dorado);}
+  .step h3{font-size:23px; color:var(--blanco); font-weight:500;}
+  .step p{margin-top:10px; color:var(--blanco-op); font-size:15px; line-height:1.65; max-width:56ch;}
+
+  /* ---------- stats ---------- */
+  .stats{display:grid; grid-template-columns:repeat(4,1fr); gap:24px; border-top:1px solid var(--line); border-bottom:1px solid var(--line); padding:60px 6vw;}
+  @media (max-width:820px){.stats{grid-template-columns:repeat(2,1fr); gap:44px 24px;}}
+  .stat h2{font-size:clamp(34px,4.2vw,58px); color:var(--dorado);}
+  .stat p{margin-top:10px; font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--blanco-op);}
+
+  /* ---------- testimonials ---------- */
+  .testis{display:grid; grid-template-columns:repeat(3,1fr); gap:22px; margin-top:10px;}
+  @media (max-width:860px){.testis{grid-template-columns:1fr;}}
+  .testi{padding:36px 30px;}
+  .testi .stars{color:var(--dorado); font-size:14px; letter-spacing:.2em;}
+  .testi p{margin-top:20px; font-size:15px; line-height:1.7; color:var(--blanco-op); font-style:italic; font-family:'Bodoni Moda',serif; font-weight:400;}
+  .testi .who{margin-top:22px; font-size:12px; letter-spacing:.08em; text-transform:uppercase; color:var(--blanco-op2);}
+
+  /* ---------- final CTA / form ---------- */
+  .finale{
+    background:
+      radial-gradient(ellipse 60% 60% at 50% 0%, #a8182e33, transparent 65%),
+      linear-gradient(180deg, var(--burdeos), var(--negro));
+    text-align:center;
+  }
+  .finale h2{font-size:clamp(38px,6.4vw,78px); color:var(--blanco);}
+  .finale .sub{margin:22px auto 0; max-width:52ch; color:var(--blanco-op); font-size:16px; line-height:1.7;}
+  .form-wrap{max-width:560px; margin:56px auto 0; padding:44px 38px; text-align:left;}
+  .form-row{display:grid; grid-template-columns:1fr 1fr; gap:16px;}
+  @media (max-width:560px){.form-row{grid-template-columns:1fr;}}
+  .field{margin-top:18px;}
+  .field label{display:block; font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--blanco-op2); margin-bottom:8px;}
+  .field input, .field select{
+    width:100%; background:#00000030; border:1px solid var(--glass-border); border-radius:3px;
+    padding:13px 14px; color:var(--blanco); font-family:'Jost',sans-serif; font-size:14px; font-weight:300;
+    outline:none; transition:border-color .25s;
+  }
+  .field input:focus, .field select:focus{border-color:var(--dorado);}
+  .field select option{background:var(--negro2);}
+  .form-wrap .btn{width:100%; text-align:center; margin-top:28px; cursor:pointer;}
+  .form-note{margin-top:16px; font-size:11px; color:var(--blanco-op2); text-align:center;}
+
+  footer{
+    display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px;
+    padding:34px 6vw; border-top:1px solid var(--line); background:var(--negro);
+    font-size:11px; color:var(--blanco-op2); letter-spacing:.06em;
+  }
+  footer .fbrand{font-family:'Bodoni Moda',serif; font-size:16px; color:var(--blanco-op); letter-spacing:.06em;}
+  footer .flinks{display:flex; gap:26px;}
+  footer a{text-decoration:none; opacity:.8;}
+  footer a:hover{opacity:1;}
+
+  .fade-up{opacity:0; transform:translateY(26px); transition:opacity .8s ease, transform .8s ease;}
+  .fade-up.show{opacity:1; transform:translateY(0);}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important; transition:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="#" class="brand">LUMIÈRE</a>
+  <div class="links">
+    <a href="#servicios">Servicios</a>
+    <a href="#trabajo">Trabajo</a>
+    <a href="#proceso">Proceso</a>
+    <a href="#contacto">Contacto</a>
+  </div>
+  <a href="#contacto" class="btn solid nav-cta">Solicitar cotización</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">ESTUDIO CREATIVO DE CONTENIDO UGC CON HERRAMIENTAS DIGITALES</div>
+    <h1>Imágenes con el poder de <span class="accent">vender</span>, sin la cámara.</h1>
+    <p class="sub">Creamos contenido visual UGC con herramientas digitales, con enfoque en eCommerce, para marcas de alto nivel. <strong>Calidad editorial de campaña de lujo, sin sesiones fotográficas, sin esperas.</strong></p>
+    <div class="cta-row">
+      <a href="#contacto" class="btn solid">Solicitar una cotización</a>
+      <a href="#trabajo" class="btn">Ver el trabajo</a>
+    </div>
+    <div class="micro">Shopify · Amazon · TikTok Shop · Etsy</div>
+  </div>
+
+  <svg class="hero-visual" viewBox="0 0 400 500" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <radialGradient id="glow" cx="50%" cy="30%" r="70%">
+        <stop offset="0%" stop-color="#a8182e" stop-opacity="0.55"/>
+        <stop offset="100%" stop-color="#a8182e" stop-opacity="0"/>
+      </radialGradient>
+      <linearGradient id="bottleg" x1="0" y1="0" x2="1" y2="1">
+        <stop offset="0%" stop-color="#f7f2ec"/>
+        <stop offset="60%" stop-color="#c9a15c"/>
+        <stop offset="100%" stop-color="#7d1120"/>
+      </linearGradient>
+      <linearGradient id="liquidg" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#a8182e"/>
+        <stop offset="100%" stop-color="#2b0810"/>
+      </linearGradient>
+    </defs>
+    <circle cx="200" cy="220" r="200" fill="url(#glow)"/>
+    <ellipse cx="200" cy="430" rx="110" ry="18" fill="#00000055"/>
+    <rect x="140" y="150" width="120" height="230" rx="18" fill="url(#liquidg)" opacity="0.92"/>
+    <rect x="140" y="150" width="120" height="230" rx="18" fill="none" stroke="#f7f2ec33" stroke-width="1"/>
+    <rect x="155" y="100" width="90" height="60" rx="10" fill="url(#bottleg)"/>
+    <rect x="170" y="70" width="60" height="36" rx="8" fill="#0a0506"/>
+    <rect x="150" y="200" width="100" height="1" fill="#f7f2ec22"/>
+    <rect x="150" y="230" width="100" height="1" fill="#f7f2ec22"/>
+    <rect x="150" y="260" width="70" height="1" fill="#f7f2ec22"/>
+    <circle cx="90" cy="120" r="3" fill="#c9a15c"/>
+    <circle cx="320" cy="340" r="4" fill="#c9a15c"/>
+    <circle cx="330" cy="90" r="2" fill="#f7f2ec"/>
+  </svg>
+
+  <div class="scroll-cue"><span class="line"></span>Descubre más</div>
+</section>
+
+<div class="trust">
+  <div class="trust-inner">
+    <span>Shopify</span><span>Amazon</span><span>TikTok Shop</span><span>Etsy</span><span>Google Shopping</span>
+    <span>Shopify</span><span>Amazon</span><span>TikTok Shop</span><span>Etsy</span><span>Google Shopping</span>
+  </div>
+</div>
+
+<section id="ventaja">
+  <div class="section-head fade-up">
+    <div class="eyebrow">La ventaja Lumière</div>
+    <h2>El mismo nivel editorial. Una fracción del tiempo y el costo.</h2>
+    <p>Sustituimos las sesiones fotográficas tradicionales por contenido UGC creado con herramientas digitales, con enfoque en eCommerce, replicando la iluminación, composición y textura de una campaña de lujo real.</p>
+  </div>
+
+  <div class="compare fade-up">
+    <div class="glass compare-card old">
+      <div class="badge">Producción tradicional</div>
+      <h3>Sesión fotográfica clásica</h3>
+      <ul class="compare-list">
+        <li><span class="mark">–</span>2 a 4 semanas de espera entre reserva y entrega</li>
+        <li><span class="mark">–</span>Costos de estudio, modelos, styling y locación</li>
+        <li><span class="mark">–</span>Revisiones limitadas y reshoots costosos</li>
+        <li><span class="mark">–</span>Difícil de escalar para múltiples SKUs</li>
+      </ul>
+    </div>
+    <div class="glass compare-card new">
+      <div class="badge">Estudio Lumière</div>
+      <h3>Contenido UGC con herramientas digitales</h3>
+      <ul class="compare-list">
+        <li><span class="mark">✓</span>Entrega en 48–72 horas por set de imágenes</li>
+        <li><span class="mark">✓</span>Sin cámaras, modelos ni locación física</li>
+        <li><span class="mark">✓</span>Rondas de ajuste incluidas en cada proyecto</li>
+        <li><span class="mark">✓</span>Escalable a catálogos completos y campañas continuas</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="servicios">
+  <div class="section-head fade-up">
+    <div class="eyebrow">Servicios</div>
+    <h2>Contenido visual diseñado para convertir, no solo para verse bien.</h2>
+    <p>Cada pieza se construye pensando en la plataforma donde va a vivir y en la decisión de compra que necesita impulsar.</p>
+  </div>
+
+  <div class="services-grid fade-up">
+    <div class="glass service">
+      <div class="num">01</div>
+      <svg class="icon" viewBox="0 0 44 44" fill="none"><rect x="7" y="10" width="30" height="26" rx="3" stroke="#c9a15c" stroke-width="1.3"/><circle cx="22" cy="23" r="7" stroke="#c9a15c" stroke-width="1.3"/><circle cx="30" cy="16" r="1.6" fill="#c9a15c"/></svg>
+      <h3>Fotografía de producto</h3>
+      <p>Imágenes limpias y editoriales listas para fichas de producto y catálogo.</p>
+    </div>
+    <div class="glass service">
+      <div class="num">02</div>
+      <svg class="icon" viewBox="0 0 44 44" fill="none"><path d="M9 34 Q22 12 35 34" stroke="#c9a15c" stroke-width="1.3"/><circle cx="22" cy="18" r="5" stroke="#c9a15c" stroke-width="1.3"/></svg>
+      <h3>Fotografía lifestyle</h3>
+      <p>Manos, texturas y escenarios que sitúan el producto en la vida real.</p>
+    </div>
+    <div class="glass service">
+      <div class="num">03</div>
+      <svg class="icon" viewBox="0 0 44 44" fill="none"><rect x="10" y="8" width="24" height="28" rx="2" stroke="#c9a15c" stroke-width="1.3"/><rect x="15" y="14" width="14" height="10" fill="#c9a15c" opacity="0.5"/></svg>
+      <h3>Mockups premium</h3>
+      <p>Empaques y presentaciones de marca con acabados de alta gama.</p>
+    </div>
+    <div class="glass service">
+      <div class="num">04</div>
+      <svg class="icon" viewBox="0 0 44 44" fill="none"><rect x="8" y="8" width="12" height="12" rx="2" stroke="#c9a15c" stroke-width="1.3"/><rect x="24" y="8" width="12" height="12" rx="2" stroke="#c9a15c" stroke-width="1.3"/><rect x="8" y="24" width="12" height="12" rx="2" stroke="#c9a15c" stroke-width="1.3"/><rect x="24" y="24" width="12" height="12" rx="2" stroke="#c9a15c" stroke-width="1.3"/></svg>
+      <h3>Contenido para redes</h3>
+      <p>Sets pensados para el scroll: Instagram, TikTok y Pinterest.</p>
+    </div>
+    <div class="glass service">
+      <div class="num">05</div>
+      <svg class="icon" viewBox="0 0 44 44" fill="none"><path d="M8 30 L18 16 L26 24 L36 10" stroke="#c9a15c" stroke-width="1.3"/><circle cx="36" cy="10" r="2" fill="#c9a15c"/></svg>
+      <h3>Anuncios & campañas</h3>
+      <p>Creativos publicitarios optimizados para campañas de eCommerce y Google Shopping.</p>
+    </div>
+    <div class="glass service">
+      <div class="num">06</div>
+      <svg class="icon" viewBox="0 0 44 44" fill="none"><circle cx="22" cy="22" r="13" stroke="#c9a15c" stroke-width="1.3"/><path d="M22 9 L22 22 L30 26" stroke="#c9a15c" stroke-width="1.3"/></svg>
+      <h3>Contenido para marketplaces</h3>
+      <p>Imágenes optimizadas para las guías de Amazon, Etsy y TikTok Shop.</p>
+    </div>
+  </div>
+</section>
+
+<section id="trabajo">
+  <div class="section-head fade-up">
+    <div class="eyebrow">Trabajo seleccionado</div>
+    <h2>Cada imagen, una decisión de compra a favor de tu marca.</h2>
+  </div>
+  <div class="gallery fade-up">
+    <div class="g-item tall"><div class="layer g1"></div><div class="sheen"></div><div class="tag">Skincare · Producto</div></div>
+    <div class="g-item"><div class="layer g2"></div><div class="sheen"></div><div class="tag">Fragancia · Lifestyle</div></div>
+    <div class="g-item"><div class="layer g3"></div><div class="sheen"></div><div class="tag">Cosmética · Mockup</div></div>
+    <div class="g-item tall"><div class="layer g4"></div><div class="sheen"></div><div class="tag">Belleza · Campaña</div></div>
+    <div class="g-item"><div class="layer g5"></div><div class="sheen"></div><div class="tag">Wellness · Redes</div></div>
+    <div class="g-item"><div class="layer g6"></div><div class="sheen"></div><div class="tag">Joyería · Editorial</div></div>
+  </div>
+</section>
+
+<section id="proceso">
+  <div class="section-head fade-up">
+    <div class="eyebrow">Cómo trabajamos</div>
+    <h2>De tu producto a una campaña completa, en cuatro etapas.</h2>
+  </div>
+  <div class="process fade-up">
+    <div class="step"><div class="num">01</div><div><h3>Brief de marca</h3><p>Analizamos tu producto, tu identidad visual y la plataforma donde venderás.</p></div></div>
+    <div class="step"><div class="num">02</div><div><h3>Dirección de arte</h3><p>Definimos composición, iluminación y estilo alineados a referencias de lujo.</p></div></div>
+    <div class="step"><div class="num">03</div><div><h3>Generación & curaduría</h3><p>Producimos múltiples variaciones y seleccionamos las de mayor impacto.</p></div></div>
+    <div class="step"><div class="num">04</div><div><h3>Entrega optimizada</h3><p>Archivos listos para cada plataforma, con una ronda de ajustes incluida.</p></div></div>
+  </div>
+</section>
+
+<div class="stats fade-up">
+  <div class="stat"><h2>72h</h2><p>Entrega promedio</p></div>
+  <div class="stat"><h2>+60</h2><p>Marcas de eCommerce</p></div>
+  <div class="stat"><h2>4.2x</h2><p>CTR vs. fotografía stock</p></div>
+  <div class="stat"><h2>90%</h2><p>Ahorro vs. sesión tradicional</p></div>
+</div>
+
+<section id="testimonios">
+  <div class="section-head fade-up center">
+    <div class="eyebrow" style="justify-content:center;">Marcas que confían en Lumière</div>
+    <h2>Resultados que hablan antes que nosotros.</h2>
+  </div>
+  <div class="testis fade-up">
+    <div class="glass testi">
+      <div class="stars">★★★★★</div>
+      <p>"Reemplazamos por completo nuestras sesiones fotográficas. El nivel editorial es indistinguible de una campaña de lujo real."</p>
+      <div class="who">— Fundadora, marca de skincare</div>
+    </div>
+    <div class="glass testi">
+      <div class="stars">★★★★★</div>
+      <p>"Nuestra conversión en Shopify subió de forma notable apenas cambiamos las imágenes de producto."</p>
+      <div class="who">— Directora de e-commerce, marca de fragancias</div>
+    </div>
+    <div class="glass testi">
+      <div class="stars">★★★★★</div>
+      <p>"La velocidad de entrega nos permitió lanzar campañas que antes eran imposibles con nuestro presupuesto."</p>
+      <div class="who">— Growth Lead, marca de belleza</div>
+    </div>
+  </div>
+</section>
+
+<section class="finale" id="contacto">
+  <div class="eyebrow" style="justify-content:center; display:flex;">Empecemos tu próxima campaña</div>
+  <h2 class="fade-up">Contenido de lujo,<br>listo para vender.</h2>
+  <p class="sub fade-up">Cuéntanos sobre tu marca y tu producto. Te respondemos en menos de 24 horas con una propuesta a medida.</p>
+
+  <div class="glass form-wrap fade-up" style="text-align:center;">
+    <p style="font-size:16px;">Para gestionar tu cotización enviame un correo a <a href="mailto:mamstudiotrabajosconmarcas@gmail.com" style="color:inherit; text-decoration:underline;">mamstudiotrabajosconmarcas@gmail.com</a></p>
+  </div>
+</section>
+
+<footer>
+  <span class="fbrand">LUMIÈRE</span>
+  <div class="flinks">
+    <a href="#servicios">Servicios</a>
+    <a href="#trabajo">Trabajo</a>
+    <a href="#contacto">Contacto</a>
+  </div>
+  <span>© 2026 Estudio Lumière — Contenido UGC con herramientas digitales</span>
+</footer>
+
+<script>
+  const nv = document.getElementById('nav');
+  window.addEventListener('scroll', () => {
+    nv.classList.toggle('scrolled', window.scrollY > 40);
+  });
+
+  const obs = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('show'); } });
+  }, {threshold:0.12});
+  document.querySelectorAll('.fade-up').forEach(el=>obs.observe(el));
+</script>
+
+</body>
+</html>
